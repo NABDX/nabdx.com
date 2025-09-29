@@ -1,60 +1,144 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>NABDX — Latency Brokerage (MENA ↔ Global)</title>
-  <meta name="description" content="NABDX: reducing cross-border network latency between MENA markets and global exchange infrastructure. Vendor LOIs & partnerships available." />
-  <style>
-    body{font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;margin:0;color:#0b1220}
-    .container{max-width:920px;margin:6vh auto;padding:40px}
-    header{display:flex;align-items:center;gap:18px}
-    .logo{width:56px;height:56px;border-radius:8px;background:#0b1220;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
-    h1{margin:0;font-size:28px}
-    p.lead{color:#334155;margin-top:12px;font-size:16px;line-height:1.5}
-    .btn{display:inline-block;margin-top:20px;padding:12px 18px;border-radius:8px;text-decoration:none;border:1px solid #0b1220}
-    footer{margin-top:48px;color:#6b7280;font-size:13px}
-    .grid{display:flex;gap:16px;margin-top:28px}
-    .card{flex:1;padding:18px;border-radius:10px;background:#f8fafc;border:1px solid #e6eef6}
-    code{background:#0b1220;color:#e6f1ff;padding:2px 6px;border-radius:4px}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>NABDX — Engineering Latency Advantage</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --deep-navy:#071833;
+    --navy:#0B2240;
+    --teal:#39A9D6;
+    --cyan:#66D0F2;
+    --silver:#C9CED6;
+    --muted:#6B7480;
+    --surface:#F5F7FA;
+    --glass: rgba(255,255,255,0.04);
+    --radius:14px;
+    --ease: cubic-bezier(.22,.9,.3,1);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:Inter, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:var(--silver);background:linear-gradient(180deg,var(--deep-navy) 0%, var(--navy) 100%);-webkit-font-smoothing:antialiased;}
+  .container{max-width:1100px;margin:64px auto;padding:40px;}
+  .header{display:flex;align-items:center;gap:20px;margin-bottom:28px;}
+  .brand{
+    display:flex;align-items:center;gap:12px;
+  }
+  .logo{
+    width:64px;height:64px;border-radius:12px;background:linear-gradient(180deg,var(--navy),var(--deep-navy));display:flex;align-items:center;justify-content:center;box-shadow: 0 6px 20px rgba(3,10,20,0.45);transform:translateZ(0);
+    transition:transform .45s var(--ease), box-shadow .45s var(--ease);
+  }
+  .logo:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 14px 40px rgba(3,10,20,0.55)}
+  .logo .N{font-weight:800;font-size:20px;color:var(--silver);letter-spacing:0.06em}
+  h1{font-size:36px;margin:0;font-weight:800;color:white;line-height:1.05;letter-spacing:-0.02em}
+  p.lead{margin:14px 0 24px;color:var(--silver);max-width:760px;font-size:16px}
+  .cta-row{display:flex;gap:14px;align-items:center}
+  .btn{
+    background:linear-gradient(180deg,var(--teal), var(--cyan));border:0;padding:12px 18px;border-radius:12px;color:#05202A;font-weight:700;cursor:pointer;font-size:15px;box-shadow: 0 10px 30px rgba(51,183,217,0.12);
+    transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+  }
+  .btn:hover{transform:translateY(-4px);box-shadow:0 22px 44px rgba(51,183,217,0.16)}
+  .btn.ghost{background:transparent;border:1px solid rgba(201,206,214,0.12);color:var(--silver);backdrop-filter: blur(6px);padding:10px 16px}
+  .panel{
+    margin-top:34px;display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start;
+  }
+  .card{background: rgba(255,255,255,0.02);padding:22px;border-radius:12px;box-shadow: 0 8px 30px rgba(2,6,14,0.45);border:1px solid rgba(255,255,255,0.03);transition: transform .45s var(--ease)}
+  .card:hover{transform:translateY(-6px)}
+  ul.services{padding-left:18px;margin:0;color:var(--silver)}
+  ul.services li{margin:10px 0;color:var(--silver)}
+  .why{font-size:15px;color:var(--silver);line-height:1.5}
+  .process{display:flex;gap:12px;margin-top:18px}
+  .process .step{background:var(--glass);padding:10px 12px;border-radius:10px;font-weight:600;color:var(--silver);min-width:120px;text-align:center;backdrop-filter: blur(6px)}
+  /* subtle parallax / hero graphic */
+  .hero-visual{height:220px;border-radius:12px;overflow:hidden;background:linear-gradient(120deg, rgba(57,169,214,0.06), transparent 45%);position:relative}
+  .curve{
+    position:absolute;left:8%;top:40%;width:74%;height:80%;
+    background:linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    transform: translate3d(0,0,0);
+  }
+  /* small screens */
+  @media (max-width:880px){
+    .container{padding:20px;margin:26px auto}
+    .panel{grid-template-columns:1fr}
+    h1{font-size:28px}
+  }
+
+  /* smooth entrance animations */
+  .fade-in{opacity:0;transform: translateY(10px);}
+  .fade-in.visible{opacity:1;transform:none;transition:all .65s var(--ease);}
+</style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="logo">N</div>
-      <div>
-        <h1>NABDX — Latency Brokerage</h1>
-        <div style="color:#64748b;font-size:13px">Founder: YOUR NAME • <a href="mailto:founder@nabdx.com">founder@nabdx.com</a></div>
+  <main class="container">
+    <header class="header fade-in" id="header">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span class="N">N</span></div>
+        <div>
+          <div style="font-size:13px;color:var(--muted)">NABDX — Engineering Latency Advantage</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:6px">Founder: YOUR NAME • <a href="mailto:founder@nabdx.com" style="color:var(--silver);text-decoration:none">founder@nabdx.com</a></div>
+        </div>
       </div>
     </header>
 
-    <p class="lead">
-      NABDX optimizes cross-border connectivity between MENA market gateways and global low-latency routes. We secure vendor LOIs, validate route performance, and broker direct peering to reduce round-trip times for market participants.
-    </p>
+    <section class="fade-in" id="hero">
+      <h1>NABDX — Engineering Latency Advantage for MENA Markets</h1>
+      <p class="lead">We design, validate and deliver exclusive low-latency connectivity for trading desks across MENA. Our edge: vendor-grade access, route engineering, and measurable millisecond improvements — not paperwork.</p>
 
-    <a class="btn" href="mailto:founder@nabdx.com?subject=Vendor%20LOI%20Request">Request Vendor LOI</a>
+      <div class="cta-row">
+        <button class="btn" onclick="location.href='#audit'">Request Performance Audit</button>
+        <button class="btn ghost" onclick="location.href='#solutions'">Explore Solutions</button>
+      </div>
 
-    <div class="grid" aria-hidden="true">
+      <div style="margin-top:28px" class="hero-visual">
+        <div class="curve" id="curve"></div>
+      </div>
+    </section>
+
+    <section class="panel fade-in" id="panel">
       <div class="card">
-        <strong>Services</strong>
-        <ul>
-          <li>Vendor LOI facilitation</li>
-          <li>Latency validation & benchmarking</li>
-          <li>Route brokering & negotiation</li>
+        <h3 style="margin-top:0;color:white">Services</h3>
+        <ul class="services">
+          <li>Latency benchmarking & verification — live and lab-validated</li>
+          <li>Strategic connectivity design & path engineering</li>
+          <li>Exclusive route access and commercial facilitation</li>
+          <li>Monitoring, SLAs & performance governance</li>
         </ul>
-      </div>
-      <div class="card">
-        <strong>Why NABDX</strong>
-        <p>Operational focus on MENA market gaps, technical validation, and commercial leverage to deliver measurable RT improvements for HFT clients.</p>
-      </div>
-    </div>
 
-    <footer>
-      © <span id="year"></span> NABDX • nabdx.com • Built for vendor & HFT outreach
-    </footer>
-  </div>
+        <div class="process" aria-hidden="true" style="margin-top:18px">
+          <div class="step">Audit</div>
+          <div class="step">Design</div>
+          <div class="step">Deliver</div>
+        </div>
+      </div>
 
-  <script>document.getElementById('year').textContent=new Date().getFullYear()</script>
+      <aside class="card">
+        <h4 style="margin:0 0 10px 0;color:white">Why NABDX</h4>
+        <div class="why">
+          We don’t broker routes — we engineer advantage. With deep technical validation, exclusive vendor pathways, and a commercial execution model designed for trading desks, NABDX converts vendor access into measurable round-trip wins.
+        </div>
+      </aside>
+    </section>
+
+    <footer style="margin-top:40px;color:var(--muted);font-size:13px">© 2025 NABDX • Built for market access & performance</footer>
+  </main>
+
+<script>
+  // reveal on load with stagger
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.fade-in').forEach((el, i) => {
+      setTimeout(()=> el.classList.add('visible'), 100 + i*120);
+    });
+
+    // subtle parallax on mouse move
+    const curve = document.getElementById('curve');
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX - window.innerWidth/2) / (window.innerWidth/2);
+      const y = (e.clientY - window.innerHeight/2) / (window.innerHeight/2);
+      curve.style.transform = `translate3d(${x*6}px, ${y*6}px, 0) rotate(${x*2}deg)`;
+    });
+  });
+</script>
 </body>
 </html>
