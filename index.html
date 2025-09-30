@@ -1,229 +1,57 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>NABDX — Engineering Latency Advantage</title>
-
-<!-- Fonts: Inter (system fallback gives Apple-like feel on iOS) -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
-<style>
-  /* -----------------------
-     Color system (from your logo)
-     ----------------------- */
-  :root{
-    --deep-1: #131138;   /* darkest background */
-    --deep-2: #17113d;
-    --deep-3: #18103f;
-    --accent-cyan: #6efff4; /* bright cyan glow from logo */
-    --accent-cyan-2: #39dbe9; /* subtle second accent */
-    --muted: rgba(201,206,214,0.9);
-    --glass: rgba(255,255,255,0.03);
-    --radius:14px;
-    --ease-spring: cubic-bezier(.22,.9,.3,1);
-  }
-
-  /* -----------------------
-     Base / Layout
-     ----------------------- */
-  *{box-sizing:border-box}
-  html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--deep-1) 0%, var(--deep-2) 52%, var(--deep-3) 100%);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--muted);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-  :focus{outline:2px solid rgba(110,255,244,0.12);outline-offset:3px}
-
-  main.container{max-width:1180px;margin:48px auto;padding:28px}
-
-  /* -----------------------
-     Header
-     ----------------------- */
-  header.top{
-    display:flex;align-items:center;justify-content:space-between;gap:16px;
-    margin-bottom:28px;backdrop-filter: blur(8px);-webkit-backdrop-filter: blur(8px);
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border-radius:12px;padding:10px 16px;border:1px solid rgba(255,255,255,0.03);
-    box-shadow: 0 8px 30px rgba(2,6,14,0.45);
-  }
-
-  .brand{display:flex;align-items:center;gap:12px}
-  .logo-wrap{width:68px;height:48px;display:flex;align-items:center;justify-content:center;background:transparent;border-radius:10px;overflow:hidden}
-  .logo-wrap img{width:100%;height:100%;object-fit:contain;display:block;transform:translateZ(0);filter: drop-shadow(0 12px 40px rgba(110,255,244,0.08));}
-
-  .nav-actions{display:flex;gap:10px;align-items:center}
-  .contact{font-size:13px;color:rgba(255,255,255,0.7)}
-
-  /* -----------------------
-     Hero: big centered logo + tag
-     ----------------------- */
-  .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;margin-top:18px}
-  .hero-left{padding:18px}
-  .hero-big{
-    display:flex;flex-direction:column;gap:18px;align-items:flex-start;
-  }
-  .logo-hero{
-    width:100%;
-    display:flex;align-items:center;justify-content:flex-start;
-  }
-  .logo-hero img{max-width:680px;width:70%;height:auto;filter: drop-shadow(0 24px 90px rgba(110,255,244,0.12));transform:translateZ(0);transition: transform .9s var(--ease-spring), filter .45s ease}
-  .logo-hero img:hover{transform:translateY(-6px) scale(1.02);filter: drop-shadow(0 36px 120px rgba(110,255,244,0.18))}
-
-  h1{margin:0;font-size:30px;color:white;letter-spacing:-0.01em;font-weight:800}
-  p.lead{margin:6px 0 0;font-size:16px;color:rgba(255,255,255,0.85);max-width:680px}
-
-  /* Call-to-action */
-  .ctas{display:flex;gap:12px;margin-top:18px}
-  .btn{
-    background: linear-gradient(180deg, var(--accent-cyan), var(--accent-cyan-2));
-    border:0;color:#041617;padding:12px 18px;border-radius:12px;font-weight:700;cursor:pointer;font-size:15px;box-shadow: 0 10px 30px rgba(110,255,244,0.08);
-    transition: transform .36s var(--ease-spring), box-shadow .36s var(--ease-spring), opacity .25s linear;
-    will-change: transform, opacity;
-  }
-  .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
-  .btn:active{transform:translateY(1px) scale(.995)}
-
-  /* small info card */
-  .card{background:var(--glass);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);box-shadow: 0 14px 40px rgba(2,6,14,0.45);color:var(--muted)}
-  .services{list-style:disc;padding-left:18px;margin:10px 0}
-
-  /* subtle parallax layer (hero background accent) */
-  .hero-accent{
-    height:360px;border-radius:12px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;
-    background: radial-gradient(1200px 260px at 45% 40%, rgba(110,255,244,0.06), transparent 6%),
-                linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03));
-    border:1px solid rgba(255,255,255,0.02);
-  }
-  .hero-accent::after{
-    content:"";position:absolute;inset:0;background:
-      linear-gradient(180deg, rgba(19,17,56,0.2) 0%, rgba(7,8,20,0.6) 80%);pointer-events:none;
-  }
-
-  /* layout responsiveness */
-  @media (max-width:980px){
-    .hero{grid-template-columns:1fr;gap:18px}
-    .logo-hero img{width:86%}
-  }
-  @media (max-width:520px){
-    header.top{padding:10px}
-    .logo-hero img{width:100%}
-    h1{font-size:20px}
-  }
-
-  /* -----------------------
-     Motion accessibility
-     ----------------------- */
-  @media (prefers-reduced-motion: reduce) {
-    .logo-hero img, .btn { transition: none !important; animation: none !important; }
-    * { scroll-behavior: auto !important; }
-  }
-
-  /* utility */
-  .muted-small{font-size:13px;color:rgba(255,255,255,0.65)}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NABDX</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <main class="container" id="app">
-    <header class="top" role="banner">
-      <div class="brand">
-        <div class="logo-wrap" aria-hidden="true">
-          <!-- Put your logo PNG here (place file at images/nabdx.png) -->
-          <img src="images/nabdx.png" alt="NABDX logo">
-        </div>
-        <div>
-          <div style="font-size:13px;color:rgba(255,255,255,0.85);font-weight:700">NABDX</div>
-          <div class="muted-small">Engineering Latency Advantage</div>
-        </div>
+  <!-- Navigation -->
+  <header class="navbar">
+    <img src="images/nabdx.png" alt="NABDX Logo" class="logo">
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="mailto:founder@nabdx.com" class="cta">Let's Talk</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>We link, you trade faster</h1>
+      <p>Next-gen connectivity solutions for high-frequency trading and beyond.</p>
+      <div class="hero-buttons">
+        <a href="#about" class="btn">Learn More</a>
+        <a href="mailto:founder@nabdx.com" class="btn primary">Let's Talk</a>
       </div>
+    </div>
+  </section>
 
-      <div class="nav-actions">
-        <div class="contact muted-small">Founder • <a href="mailto:founder@nabdx.com" style="color:var(--muted);text-decoration:none">founder@nabdx.com</a></div>
-        <button class="btn secondary" onclick="document.getElementById('audit').scrollIntoView({behavior:'smooth'})">Request Audit</button>
-      </div>
-    </header>
+  <!-- Placeholder Sections -->
+  <section id="about" class="section">
+    <h2>About NABDX</h2>
+    <p>We bridge the gap between HFTs and global route providers — eliminating latency and enabling speed.</p>
+  </section>
 
-    <section class="hero" role="region" aria-label="Hero">
-      <div class="hero-left">
-        <div class="hero-big">
-          <div class="logo-hero" id="logoHero">
-            <!-- Large logo in hero for brand impact -->
-            <img src="images/nabdx.png" alt="NABDX logo">
-          </div>
+  <section id="services" class="section">
+    <h2>Services</h2>
+    <p>Ultra-low latency connectivity • Vendor access • Infrastructure facilitation</p>
+  </section>
 
-          <h1>NABDX — Engineering Latency Advantage for MENA</h1>
-          <p class="lead">We design, validate and deliver exclusive low-latency connectivity for trading desks across MENA. Vendor access and route engineering turned into measurable millisecond improvements.</p>
+  <section id="contact" class="section">
+    <h2>Contact Us</h2>
+    <p>Email us directly: <a href="mailto:founder@nabdx.com">founder@nabdx.com</a></p>
+  </section>
 
-          <div class="ctas">
-            <button class="btn" onclick="document.getElementById('audit').scrollIntoView({behavior:'smooth'})">Request Performance Audit</button>
-            <button class="btn secondary" onclick="document.getElementById('solutions').scrollIntoView({behavior:'smooth'})">Explore Solutions</button>
-          </div>
-        </div>
-      </div>
+  <footer>
+    <p>© 2025 NABDX. All rights reserved.</p>
+  </footer>
 
-      <aside>
-        <div class="hero-accent card" aria-hidden="true">
-          <div style="width:100%;padding:16px">
-            <h4 style="margin:0 0 8px 0;color:white">Services</h4>
-            <ul class="services">
-              <li>Latency benchmarking & independent verification</li>
-              <li>Strategic path engineering & peering design</li>
-              <li>Exclusive route access and performance SLAs</li>
-            </ul>
-
-            <div style="margin-top:10px" class="muted-small">How we work: audit → design → deliver → govern</div>
-          </div>
-        </div>
-      </aside>
-    </section>
-
-    <section id="audit" style="margin-top:32px">
-      <div class="card">
-        <h3 style="color:white;margin:0 0 6px 0">Request a performance audit</h3>
-        <p class="muted-small">We measure current RTTs, identify path-level inefficiencies, and recommend a roadmap to a sub-millisecond result where possible.</p>
-      </div>
-    </section>
-
-    <footer style="margin-top:40px;color:rgba(255,255,255,0.6);font-size:13px">© 2025 NABDX • Built for market access & performance</footer>
-  </main>
-
-<script>
-/* Minimal, high-performance micro-interactions to give an Apple-like feel */
-
-/* 1) Staggered reveal: small, hardware-accelerated */
-document.addEventListener('DOMContentLoaded', () => {
-  const root = document.getElementById('app');
-  const items = root.querySelectorAll('header, .logo-hero img, .hero-left h1, .ctas, .card');
-  items.forEach((el,i) => {
-    el.style.opacity = 0;
-    el.style.transform = 'translateY(10px)';
-    el.style.willChange = 'transform, opacity';
-    setTimeout(()=> {
-      el.style.transition = 'opacity .65s ease, transform .65s var(--ease-spring)';
-      el.style.opacity = 1;
-      el.style.transform = 'none';
-    }, 120 + i*90);
-  });
-
-  // subtle, responsive parallax on pointer move for hero logo (light)
-  const logo = document.querySelector('.logo-hero img');
-  if (logo && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
-    let lastX=0, lastY=0, rafPending=false;
-    document.addEventListener('pointermove', (e) => {
-      const cx = (e.clientX - window.innerWidth/2) / (window.innerWidth/2);
-      const cy = (e.clientY - window.innerHeight/2) / (window.innerHeight/2);
-      lastX = cx; lastY = cy;
-      if (!rafPending) {
-        rafPending = true;
-        requestAnimationFrame(()=> {
-          logo.style.transform = `translate3d(${lastX*8}px, ${lastY*6}px, 0) scale(1.002)`;
-          rafPending = false;
-        });
-      }
-    });
-    // small settling animation when pointer leaves
-    document.addEventListener('pointerleave', ()=> { logo.style.transform = 'none'; });
-  }
-});
-
-/* 2) Accessibility: disable animations if prefers-reduced-motion set in CSS */
-/* 3) Touch / iOS specifics: CSS is already GPU-friendly (transforms + opacity only) */
-</script>
+  <script src="js/script.js"></script>
 </body>
 </html>
