@@ -4,141 +4,226 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>NABDX — Engineering Latency Advantage</title>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Fonts: Inter (system fallback gives Apple-like feel on iOS) -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
 <style>
+  /* -----------------------
+     Color system (from your logo)
+     ----------------------- */
   :root{
-    --deep-navy:#071833;
-    --navy:#0B2240;
-    --teal:#39A9D6;
-    --cyan:#66D0F2;
-    --silver:#C9CED6;
-    --muted:#6B7480;
-    --surface:#F5F7FA;
-    --glass: rgba(255,255,255,0.04);
+    --deep-1: #131138;   /* darkest background */
+    --deep-2: #17113d;
+    --deep-3: #18103f;
+    --accent-cyan: #6efff4; /* bright cyan glow from logo */
+    --accent-cyan-2: #39dbe9; /* subtle second accent */
+    --muted: rgba(201,206,214,0.9);
+    --glass: rgba(255,255,255,0.03);
     --radius:14px;
-    --ease: cubic-bezier(.22,.9,.3,1);
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%;margin:0;font-family:Inter, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:var(--silver);background:linear-gradient(180deg,var(--deep-navy) 0%, var(--navy) 100%);-webkit-font-smoothing:antialiased;}
-  .container{max-width:1100px;margin:64px auto;padding:40px;}
-  .header{display:flex;align-items:center;gap:20px;margin-bottom:28px;}
-  .brand{
-    display:flex;align-items:center;gap:12px;
-  }
-  .logo{
-    width:64px;height:64px;border-radius:12px;background:linear-gradient(180deg,var(--navy),var(--deep-navy));display:flex;align-items:center;justify-content:center;box-shadow: 0 6px 20px rgba(3,10,20,0.45);transform:translateZ(0);
-    transition:transform .45s var(--ease), box-shadow .45s var(--ease);
-  }
-  .logo:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 14px 40px rgba(3,10,20,0.55)}
-  .logo .N{font-weight:800;font-size:20px;color:var(--silver);letter-spacing:0.06em}
-  h1{font-size:36px;margin:0;font-weight:800;color:white;line-height:1.05;letter-spacing:-0.02em}
-  p.lead{margin:14px 0 24px;color:var(--silver);max-width:760px;font-size:16px}
-  .cta-row{display:flex;gap:14px;align-items:center}
-  .btn{
-    background:linear-gradient(180deg,var(--teal), var(--cyan));border:0;padding:12px 18px;border-radius:12px;color:#05202A;font-weight:700;cursor:pointer;font-size:15px;box-shadow: 0 10px 30px rgba(51,183,217,0.12);
-    transition: transform .35s var(--ease), box-shadow .35s var(--ease);
-  }
-  .btn:hover{transform:translateY(-4px);box-shadow:0 22px 44px rgba(51,183,217,0.16)}
-  .btn.ghost{background:transparent;border:1px solid rgba(201,206,214,0.12);color:var(--silver);backdrop-filter: blur(6px);padding:10px 16px}
-  .panel{
-    margin-top:34px;display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start;
-  }
-  .card{background: rgba(255,255,255,0.02);padding:22px;border-radius:12px;box-shadow: 0 8px 30px rgba(2,6,14,0.45);border:1px solid rgba(255,255,255,0.03);transition: transform .45s var(--ease)}
-  .card:hover{transform:translateY(-6px)}
-  ul.services{padding-left:18px;margin:0;color:var(--silver)}
-  ul.services li{margin:10px 0;color:var(--silver)}
-  .why{font-size:15px;color:var(--silver);line-height:1.5}
-  .process{display:flex;gap:12px;margin-top:18px}
-  .process .step{background:var(--glass);padding:10px 12px;border-radius:10px;font-weight:600;color:var(--silver);min-width:120px;text-align:center;backdrop-filter: blur(6px)}
-  /* subtle parallax / hero graphic */
-  .hero-visual{height:220px;border-radius:12px;overflow:hidden;background:linear-gradient(120deg, rgba(57,169,214,0.06), transparent 45%);position:relative}
-  .curve{
-    position:absolute;left:8%;top:40%;width:74%;height:80%;
-    background:linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-    transform: translate3d(0,0,0);
-  }
-  /* small screens */
-  @media (max-width:880px){
-    .container{padding:20px;margin:26px auto}
-    .panel{grid-template-columns:1fr}
-    h1{font-size:28px}
+    --ease-spring: cubic-bezier(.22,.9,.3,1);
   }
 
-  /* smooth entrance animations */
-  .fade-in{opacity:0;transform: translateY(10px);}
-  .fade-in.visible{opacity:1;transform:none;transition:all .65s var(--ease);}
+  /* -----------------------
+     Base / Layout
+     ----------------------- */
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--deep-1) 0%, var(--deep-2) 52%, var(--deep-3) 100%);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial;color:var(--muted);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+  :focus{outline:2px solid rgba(110,255,244,0.12);outline-offset:3px}
+
+  main.container{max-width:1180px;margin:48px auto;padding:28px}
+
+  /* -----------------------
+     Header
+     ----------------------- */
+  header.top{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    margin-bottom:28px;backdrop-filter: blur(8px);-webkit-backdrop-filter: blur(8px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:12px;padding:10px 16px;border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 8px 30px rgba(2,6,14,0.45);
+  }
+
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo-wrap{width:68px;height:48px;display:flex;align-items:center;justify-content:center;background:transparent;border-radius:10px;overflow:hidden}
+  .logo-wrap img{width:100%;height:100%;object-fit:contain;display:block;transform:translateZ(0);filter: drop-shadow(0 12px 40px rgba(110,255,244,0.08));}
+
+  .nav-actions{display:flex;gap:10px;align-items:center}
+  .contact{font-size:13px;color:rgba(255,255,255,0.7)}
+
+  /* -----------------------
+     Hero: big centered logo + tag
+     ----------------------- */
+  .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;margin-top:18px}
+  .hero-left{padding:18px}
+  .hero-big{
+    display:flex;flex-direction:column;gap:18px;align-items:flex-start;
+  }
+  .logo-hero{
+    width:100%;
+    display:flex;align-items:center;justify-content:flex-start;
+  }
+  .logo-hero img{max-width:680px;width:70%;height:auto;filter: drop-shadow(0 24px 90px rgba(110,255,244,0.12));transform:translateZ(0);transition: transform .9s var(--ease-spring), filter .45s ease}
+  .logo-hero img:hover{transform:translateY(-6px) scale(1.02);filter: drop-shadow(0 36px 120px rgba(110,255,244,0.18))}
+
+  h1{margin:0;font-size:30px;color:white;letter-spacing:-0.01em;font-weight:800}
+  p.lead{margin:6px 0 0;font-size:16px;color:rgba(255,255,255,0.85);max-width:680px}
+
+  /* Call-to-action */
+  .ctas{display:flex;gap:12px;margin-top:18px}
+  .btn{
+    background: linear-gradient(180deg, var(--accent-cyan), var(--accent-cyan-2));
+    border:0;color:#041617;padding:12px 18px;border-radius:12px;font-weight:700;cursor:pointer;font-size:15px;box-shadow: 0 10px 30px rgba(110,255,244,0.08);
+    transition: transform .36s var(--ease-spring), box-shadow .36s var(--ease-spring), opacity .25s linear;
+    will-change: transform, opacity;
+  }
+  .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+  .btn:active{transform:translateY(1px) scale(.995)}
+
+  /* small info card */
+  .card{background:var(--glass);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);box-shadow: 0 14px 40px rgba(2,6,14,0.45);color:var(--muted)}
+  .services{list-style:disc;padding-left:18px;margin:10px 0}
+
+  /* subtle parallax layer (hero background accent) */
+  .hero-accent{
+    height:360px;border-radius:12px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;
+    background: radial-gradient(1200px 260px at 45% 40%, rgba(110,255,244,0.06), transparent 6%),
+                linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03));
+    border:1px solid rgba(255,255,255,0.02);
+  }
+  .hero-accent::after{
+    content:"";position:absolute;inset:0;background:
+      linear-gradient(180deg, rgba(19,17,56,0.2) 0%, rgba(7,8,20,0.6) 80%);pointer-events:none;
+  }
+
+  /* layout responsiveness */
+  @media (max-width:980px){
+    .hero{grid-template-columns:1fr;gap:18px}
+    .logo-hero img{width:86%}
+  }
+  @media (max-width:520px){
+    header.top{padding:10px}
+    .logo-hero img{width:100%}
+    h1{font-size:20px}
+  }
+
+  /* -----------------------
+     Motion accessibility
+     ----------------------- */
+  @media (prefers-reduced-motion: reduce) {
+    .logo-hero img, .btn { transition: none !important; animation: none !important; }
+    * { scroll-behavior: auto !important; }
+  }
+
+  /* utility */
+  .muted-small{font-size:13px;color:rgba(255,255,255,0.65)}
 </style>
 </head>
 <body>
-  <main class="container">
-    <header class="header fade-in" id="header">
+  <main class="container" id="app">
+    <header class="top" role="banner">
       <div class="brand">
-        <div class="logo" aria-hidden="true"><span class="N">N</span></div>
-        <div>
-          <div style="font-size:13px;color:var(--muted)">NABDX — Engineering Latency Advantage</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:6px">Founder: YOUR NAME • <a href="mailto:founder@nabdx.com" style="color:var(--silver);text-decoration:none">founder@nabdx.com</a></div>
+        <div class="logo-wrap" aria-hidden="true">
+          <!-- Put your logo PNG here (place file at images/nabdx.png) -->
+          <img src="images/nabdx.png" alt="NABDX logo">
         </div>
+        <div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.85);font-weight:700">NABDX</div>
+          <div class="muted-small">Engineering Latency Advantage</div>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <div class="contact muted-small">Founder • <a href="mailto:founder@nabdx.com" style="color:var(--muted);text-decoration:none">founder@nabdx.com</a></div>
+        <button class="btn secondary" onclick="document.getElementById('audit').scrollIntoView({behavior:'smooth'})">Request Audit</button>
       </div>
     </header>
 
-    <section class="fade-in" id="hero">
-      <h1>NABDX — Engineering Latency Advantage for MENA Markets</h1>
-      <p class="lead">We design, validate and deliver exclusive low-latency connectivity for trading desks across MENA. Our edge: vendor-grade access, route engineering, and measurable millisecond improvements — not paperwork.</p>
+    <section class="hero" role="region" aria-label="Hero">
+      <div class="hero-left">
+        <div class="hero-big">
+          <div class="logo-hero" id="logoHero">
+            <!-- Large logo in hero for brand impact -->
+            <img src="images/nabdx.png" alt="NABDX logo">
+          </div>
 
-      <div class="cta-row">
-        <button class="btn" onclick="location.href='#audit'">Request Performance Audit</button>
-        <button class="btn ghost" onclick="location.href='#solutions'">Explore Solutions</button>
-      </div>
+          <h1>NABDX — Engineering Latency Advantage for MENA</h1>
+          <p class="lead">We design, validate and deliver exclusive low-latency connectivity for trading desks across MENA. Vendor access and route engineering turned into measurable millisecond improvements.</p>
 
-      <div style="margin-top:28px" class="hero-visual">
-        <div class="curve" id="curve"></div>
-      </div>
-    </section>
-
-    <section class="panel fade-in" id="panel">
-      <div class="card">
-        <h3 style="margin-top:0;color:white">Services</h3>
-        <ul class="services">
-          <li>Latency benchmarking & verification — live and lab-validated</li>
-          <li>Strategic connectivity design & path engineering</li>
-          <li>Exclusive route access and commercial facilitation</li>
-          <li>Monitoring, SLAs & performance governance</li>
-        </ul>
-
-        <div class="process" aria-hidden="true" style="margin-top:18px">
-          <div class="step">Audit</div>
-          <div class="step">Design</div>
-          <div class="step">Deliver</div>
+          <div class="ctas">
+            <button class="btn" onclick="document.getElementById('audit').scrollIntoView({behavior:'smooth'})">Request Performance Audit</button>
+            <button class="btn secondary" onclick="document.getElementById('solutions').scrollIntoView({behavior:'smooth'})">Explore Solutions</button>
+          </div>
         </div>
       </div>
 
-      <aside class="card">
-        <h4 style="margin:0 0 10px 0;color:white">Why NABDX</h4>
-        <div class="why">
-          We don’t broker routes — we engineer advantage. With deep technical validation, exclusive vendor pathways, and a commercial execution model designed for trading desks, NABDX converts vendor access into measurable round-trip wins.
+      <aside>
+        <div class="hero-accent card" aria-hidden="true">
+          <div style="width:100%;padding:16px">
+            <h4 style="margin:0 0 8px 0;color:white">Services</h4>
+            <ul class="services">
+              <li>Latency benchmarking & independent verification</li>
+              <li>Strategic path engineering & peering design</li>
+              <li>Exclusive route access and performance SLAs</li>
+            </ul>
+
+            <div style="margin-top:10px" class="muted-small">How we work: audit → design → deliver → govern</div>
+          </div>
         </div>
       </aside>
     </section>
 
-    <footer style="margin-top:40px;color:var(--muted);font-size:13px">© 2025 NABDX • Built for market access & performance</footer>
+    <section id="audit" style="margin-top:32px">
+      <div class="card">
+        <h3 style="color:white;margin:0 0 6px 0">Request a performance audit</h3>
+        <p class="muted-small">We measure current RTTs, identify path-level inefficiencies, and recommend a roadmap to a sub-millisecond result where possible.</p>
+      </div>
+    </section>
+
+    <footer style="margin-top:40px;color:rgba(255,255,255,0.6);font-size:13px">© 2025 NABDX • Built for market access & performance</footer>
   </main>
 
 <script>
-  // reveal on load with stagger
-  window.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.fade-in').forEach((el, i) => {
-      setTimeout(()=> el.classList.add('visible'), 100 + i*120);
-    });
+/* Minimal, high-performance micro-interactions to give an Apple-like feel */
 
-    // subtle parallax on mouse move
-    const curve = document.getElementById('curve');
-    document.addEventListener('mousemove', (e) => {
-      const x = (e.clientX - window.innerWidth/2) / (window.innerWidth/2);
-      const y = (e.clientY - window.innerHeight/2) / (window.innerHeight/2);
-      curve.style.transform = `translate3d(${x*6}px, ${y*6}px, 0) rotate(${x*2}deg)`;
-    });
+/* 1) Staggered reveal: small, hardware-accelerated */
+document.addEventListener('DOMContentLoaded', () => {
+  const root = document.getElementById('app');
+  const items = root.querySelectorAll('header, .logo-hero img, .hero-left h1, .ctas, .card');
+  items.forEach((el,i) => {
+    el.style.opacity = 0;
+    el.style.transform = 'translateY(10px)';
+    el.style.willChange = 'transform, opacity';
+    setTimeout(()=> {
+      el.style.transition = 'opacity .65s ease, transform .65s var(--ease-spring)';
+      el.style.opacity = 1;
+      el.style.transform = 'none';
+    }, 120 + i*90);
   });
+
+  // subtle, responsive parallax on pointer move for hero logo (light)
+  const logo = document.querySelector('.logo-hero img');
+  if (logo && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+    let lastX=0, lastY=0, rafPending=false;
+    document.addEventListener('pointermove', (e) => {
+      const cx = (e.clientX - window.innerWidth/2) / (window.innerWidth/2);
+      const cy = (e.clientY - window.innerHeight/2) / (window.innerHeight/2);
+      lastX = cx; lastY = cy;
+      if (!rafPending) {
+        rafPending = true;
+        requestAnimationFrame(()=> {
+          logo.style.transform = `translate3d(${lastX*8}px, ${lastY*6}px, 0) scale(1.002)`;
+          rafPending = false;
+        });
+      }
+    });
+    // small settling animation when pointer leaves
+    document.addEventListener('pointerleave', ()=> { logo.style.transform = 'none'; });
+  }
+});
+
+/* 2) Accessibility: disable animations if prefers-reduced-motion set in CSS */
+/* 3) Touch / iOS specifics: CSS is already GPU-friendly (transforms + opacity only) */
 </script>
 </body>
 </html>
