@@ -33,27 +33,14 @@ body {
   z-index: 1000;
 }
 
-/* Logo in header */
-.logo-wrap {
+.logo {
   height: 50px;
-  width: auto; /* no more square */
-  display: flex;
-  align-items: center;
-}
-
-.logo-wrap img {
-  height: 100%;
-  width: auto; /* scale naturally */
-  object-fit: contain;
-  display: block;
-  filter: drop-shadow(0 6px 20px rgba(110,255,244,0.25));
   transition: transform 0.3s ease;
 }
 
-.logo-wrap img:hover {
-  transform: scale(1.05);
+.logo:hover {
+  transform: scale(1.1);
 }
-
 
 .nav-links {
   display: flex;
