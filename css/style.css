@@ -209,9 +209,9 @@ footer {
 /* X part */
 .logo-x {
   font-family: 'Exo', sans-serif;
-  color: #ff005a; /* neon magenta-pink from PNG */
+  color: #6efff4; /* neon magenta-pink from PNG */
   text-shadow: 
-    0 0 6px #ff005a,
-    0 0 12px #e60050,
-    0 0 18px #cc0045;
+    0 0 6px #6efff4,
+    0 0 12px #00e6e6,
+    0 0 18px #00cccc;
 }
