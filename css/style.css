@@ -182,3 +182,36 @@ footer {
   to { opacity: 1; transform: translateY(0); }
 }
   
+/* Import close replacements for unavailable fonts */
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap'); /* alt for RQND Pro Ultrawide */
+@import url('https://fonts.googleapis.com/css2?family=Exo:wght@700&display=swap'); /* alt for Blanka */
+
+/* Brand text container */
+.brand-text {
+  font-size: 2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: inline-block;
+  cursor: default;
+  user-select: none;
+}
+
+/* NABD part */
+.logo-nabd {
+  font-family: 'Russo One', sans-serif;
+  color: #6efff4; /* matches your --accent */
+  text-shadow: 
+    0 0 6px #6efff4,
+    0 0 12px #00e6e6,
+    0 0 18px #00cccc;
+}
+
+/* X part */
+.logo-x {
+  font-family: 'Exo', sans-serif;
+  color: #ff005a; /* neon magenta-pink from PNG */
+  text-shadow: 
+    0 0 6px #ff005a,
+    0 0 12px #e60050,
+    0 0 18px #cc0045;
+}
