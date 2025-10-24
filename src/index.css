@@ -1,0 +1,197 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* NABDX Infrastructural Design System - All HSL */
+    
+    /* Core Infrastructure Colors */
+    --obsidian: 0 0% 4%;           /* #0A0A0A - Deep Obsidian Black */
+    --obsidian-light: 0 0% 10%;    /* #1A1A1A - Layered Dark */
+    --stark-white: 0 0% 100%;      /* #FFFFFF - Stark White */
+    --velocity-blue: 195 100% 50%; /* #00BFFF - Electric Blue Accent */
+    --velocity-glow: 195 100% 60%; /* Brighter glow variant */
+    
+    /* Semantic Tokens */
+    --background: var(--obsidian);
+    --foreground: var(--stark-white);
+    
+    --card: var(--obsidian-light);
+    --card-foreground: var(--stark-white);
+    
+    --popover: var(--obsidian-light);
+    --popover-foreground: var(--stark-white);
+    
+    --primary: var(--velocity-blue);
+    --primary-foreground: var(--obsidian);
+    
+    --secondary: var(--obsidian-light);
+    --secondary-foreground: var(--stark-white);
+    
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
+    
+    --accent: var(--velocity-blue);
+    --accent-foreground: var(--obsidian);
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: var(--stark-white);
+    
+    --border: 0 0% 15%;
+    --input: var(--obsidian-light);
+    --ring: var(--velocity-blue);
+    
+    --radius: 0.125rem; /* Sharp, minimal radius */
+    
+    /* Typography System */
+    --font-headline: 'Rajdhani', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    
+    /* Animation Timing - Precision Controlled */
+    --transition-instant: 0.1s cubic-bezier(0.1, 0.9, 0.2, 1);
+    --transition-fast: 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+    --transition-standard: 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
+    
+    /* Glow Effects */
+    --glow-subtle: 0 0 10px hsl(var(--velocity-blue) / 0.3);
+    --glow-medium: 0 0 20px hsl(var(--velocity-blue) / 0.5);
+    --glow-strong: 0 0 30px hsl(var(--velocity-blue) / 0.7);
+    
+    /* Spacing System */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-headline);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+}
+
+@layer components {
+  /* Velocity Lines - Animated Data Streams */
+  .velocity-line {
+    @apply absolute h-px opacity-30;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      hsl(var(--velocity-blue)) 50%, 
+      transparent 100%
+    );
+    animation: flow 8s linear infinite;
+  }
+  
+  @keyframes flow {
+    0% { transform: translateX(-100%); opacity: 0; }
+    10% { opacity: 0.3; }
+    90% { opacity: 0.3; }
+    100% { transform: translateX(100vw); opacity: 0; }
+  }
+  
+  /* Glow Border Effect */
+  .glow-border {
+    @apply relative;
+    transition: all var(--transition-fast);
+  }
+  
+  .glow-border::before {
+    content: '';
+    @apply absolute inset-0 rounded-sm opacity-0;
+    border: 1px solid hsl(var(--velocity-blue));
+    box-shadow: var(--glow-subtle);
+    transition: opacity var(--transition-fast);
+  }
+  
+  .glow-border:hover::before {
+    @apply opacity-100;
+  }
+  
+  /* Precision Hover Lift */
+  .hover-lift {
+    transition: transform var(--transition-fast);
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-2px);
+  }
+  
+  /* Data Grid Pattern */
+  .data-grid {
+    background-image: 
+      linear-gradient(hsl(var(--velocity-blue) / 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--velocity-blue) / 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+  
+  /* Elite CTA Button */
+  .cta-elite {
+    @apply relative overflow-hidden;
+    background: hsl(var(--stark-white));
+    color: hsl(var(--obsidian));
+    border: 1px solid hsl(var(--velocity-blue));
+    transition: all var(--transition-fast);
+  }
+  
+  .cta-elite::before {
+    content: '';
+    @apply absolute inset-0;
+    background: hsl(var(--velocity-blue));
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--transition-standard);
+  }
+  
+  .cta-elite:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  
+  .cta-elite:hover {
+    color: hsl(var(--stark-white));
+    box-shadow: var(--glow-medium);
+  }
+  
+  .cta-elite span {
+    @apply relative z-10;
+  }
+  
+  /* Word-by-Word Animation */
+  @keyframes word-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .word-animate {
+    display: inline-block;
+    opacity: 0;
+    animation: word-reveal 0.5s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+  }
+}
